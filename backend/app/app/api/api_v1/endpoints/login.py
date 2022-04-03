@@ -1,5 +1,5 @@
 from datetime import timedelta
-from typing import Any
+from typing import Any, Optional
 
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
@@ -17,8 +17,15 @@ from app.utils import (
     send_reset_password_email,
     verify_password_reset_token,
 )
-
+from fastapi import UploadFile, File
 router = APIRouter()
+
+import base64
+@router.post("/login/ok")
+async def create_file(file: bytes = File(...)):
+    print("file ok  \ne")
+    return {"file_size": len(file)}
+
 
 @router.post("/login/faceid")
 def login_faceid(
@@ -35,12 +42,18 @@ def login_faceid(
     payload = {}
     headers = { 'token': "46a46e2db1e2400bbf5e3d0e04af2f51" }
 
-    files = { "photo": file }
     # Or use URL
     # payload["photo"] = "https://dashboard.luxand.cloud/img/brad.jpg";
+    imgdata = base64.b64decode(file.name)
+    filename = './some_image.jpg' 
+    with open(filename, 'wb') as f:
+        f.write(b'ok')
+        files = { "photo": f }
+        print("YES\n")
 
-    #response = requests.request("POST", url, data=payload, headers=headers, files=files)
-    
+
+    response = requests.request("POST", url, data=payload, headers=headers, files= {"photo":  imgdata} )
+    print(response.text)
     return True
 
 @router.post("/login/access-token", response_model=schemas.Token)
