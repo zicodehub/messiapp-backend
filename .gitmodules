@@ -1,0 +1,3 @@
+[submodule "ippfapp"]
+	path = ippfapp
+	url = git@github.com:Rokiatou20/hackathon2022.git

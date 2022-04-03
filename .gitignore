@@ -1,0 +1,6 @@
+.vscode
+.mypy_cache
+docker-stack.yml
+#.gitmodules
+
+**/.DS_Store
