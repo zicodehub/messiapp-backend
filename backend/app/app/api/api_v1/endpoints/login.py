@@ -4,7 +4,9 @@ from typing import Any
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from app import schemas
 
+import requests
 from app import crud, models, schemas
 from app.api import deps
 from app.core import security
@@ -17,6 +19,29 @@ from app.utils import (
 )
 
 router = APIRouter()
+
+@router.post("/login/faceid")
+def login_faceid(
+    file: schemas.Face,
+    db: Session = Depends(deps.get_db)
+) -> Any:
+    """
+    OAuth2 compatible token login, get an access token for future requests
+    """
+
+    
+    url = "https://api.luxand.cloud/photo/search"
+
+    payload = {}
+    headers = { 'token': "46a46e2db1e2400bbf5e3d0e04af2f51" }
+
+    files = { "photo": file }
+    # Or use URL
+    # payload["photo"] = "https://dashboard.luxand.cloud/img/brad.jpg";
+
+    #response = requests.request("POST", url, data=payload, headers=headers, files=files)
+    
+    return True
 
 @router.post("/login/access-token", response_model=schemas.Token)
 def login_access_token(
@@ -38,8 +63,7 @@ def login_access_token(
         )
     return {
         "access_token": token,
-        "token_type": "bearer",
-        "lang":user.lang or 'ENG'
+        "token_type": "bearer"
     }
 
 

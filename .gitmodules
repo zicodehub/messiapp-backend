@@ -1,3 +1,6 @@
 [submodule "front"]
 	path = front
 	url = git@github.com:Rokiatou20/hackathon2022.git
+[submodule "endPoint"]
+	path = endPoint
+	url = https://github.com/Souleymane12345/endPoint
