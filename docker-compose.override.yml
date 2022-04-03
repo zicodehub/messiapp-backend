@@ -60,17 +60,17 @@ services:
       - traefik.http.services.${STACK_NAME?Variable not set}-backend.loadbalancer.server.port=80
 
   frontend:
+    container_name: messiapp
     ports:
-    - "3000:80"
+    - "3000:3000"
     build:
       context: ./frontend
       args:
         FRONTEND_ENV: dev
     volumes:
-       - ./ippfapp/src/:/app/src/
-       - ./ippfapp/package.json:/app/package.json
-       - ./ippfapp/package-lock.json:/app/package-lock.json   
-       - ./ippfapp/.env:/app/.env   
+       - ./frontend/src/:/app/src/
+
+  
     command: npm start
     labels:
       - traefik.enable=true
@@ -83,4 +83,4 @@ networks:
     # For local dev, don't expect an external Traefik network
     external: false
 volumes:
-  app:
+  messiapp:
